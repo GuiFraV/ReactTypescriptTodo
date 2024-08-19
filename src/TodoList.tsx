@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Todo {
   id: number;
@@ -6,9 +6,12 @@ interface Todo {
   completed: boolean;
 }
 
-const TodoList: React.FC = () => {
+type FilterType = "all" | "active" | "completed";
+
+const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputText, setInputText] = useState<string>("");
+  const [filter, setFilter] = useState<FilterType>("all");
 
   const addTodo = () => {
     if (inputText.trim() !== "") {
@@ -28,6 +31,21 @@ const TodoList: React.FC = () => {
     );
   };
 
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+    console.log(id);
+  };
+
+  const handleFilterChange = (newFilter: FilterType) => {
+    setFilter(newFilter);
+  };
+
+  const filteredTodo = todos.filter((todo) => {
+    if (filter === "all") return true;
+    if (filter === "active") return !todo.completed;
+    if (filter === "completed") return todo.completed;
+  });
+
   return (
     <div>
       <h1>Ma Todo List</h1>
@@ -38,14 +56,30 @@ const TodoList: React.FC = () => {
         placeholder="Ajouter une tâche"
       />
       <button onClick={addTodo}>Ajouter</button>
+
+      <div>
+        <button onClick={() => handleFilterChange("all")}>All</button>
+        <button onClick={() => handleFilterChange("active")}>Active</button>
+        <button onClick={() => handleFilterChange("completed")}>
+          Completed
+        </button>
+      </div>
       <ul>
-        {todos.map((todo) => (
+        {filteredTodo.map((todo) => (
           <li
             key={todo.id}
             onClick={() => toggleTodo(todo.id)}
             style={{ textDecoration: todo.completed ? "line-through" : "none" }}
           >
             {todo.text}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTodo(todo.id);
+              }}
+            >
+              Supprimer
+            </button>
           </li>
         ))}
       </ul>

@@ -6,51 +6,43 @@ interface Todo {
   completed: boolean;
 }
 
-const TodoList: React.FC<{}> = () => {
+const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputText, setInputText] = useState<string>("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleAddTodo = () => {
-    if (inputValue.trim() !== "") {
-      const newTodo: Todo = {
-        id: Date.now(),
-        text: inputValue,
-        completed: false,
-      };
-      setTodos([...todos, newTodo]);
-      setInputValue("");
+  const addTodo = () => {
+    if (inputText.trim() !== "") {
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: inputText.trim(), completed: false },
+      ]);
+      setInputText("");
     }
   };
 
-  const handleToggleTodo = (id: number) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+  const toggleTodo = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   return (
     <div>
-      <h1>TodoList</h1>
+      <h1>Ma Todo List</h1>
       <input
         type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="Enter a new todo"
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        placeholder="Ajouter une tâche"
       />
-      <button onClick={handleAddTodo}>Add Todo</button>
+      <button onClick={addTodo}>Ajouter</button>
       <ul>
         {todos.map((todo) => (
           <li
             key={todo.id}
-            onClick={() => handleToggleTodo(todo.id)}
+            onClick={() => toggleTodo(todo.id)}
             style={{ textDecoration: todo.completed ? "line-through" : "none" }}
           >
             {todo.text}

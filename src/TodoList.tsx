@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Todo {
   id: number;
@@ -12,6 +12,7 @@ const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputText, setInputText] = useState<string>("");
   const [filter, setFilter] = useState<FilterType>("all");
+  const [completedTodo, setCompletedTodo] = useState<number>(0);
 
   const addTodo = () => {
     if (inputText.trim() !== "") {
@@ -46,6 +47,11 @@ const TodoList = () => {
     if (filter === "completed") return todo.completed;
   });
 
+  useEffect(() => {
+    const completedCount = todos.filter((todo) => todo.completed).length;
+    setCompletedTodo(completedCount);
+  }, [todos]);
+
   return (
     <div>
       <h1>Ma Todo List</h1>
@@ -55,6 +61,7 @@ const TodoList = () => {
         onChange={(e) => setInputText(e.target.value)}
         placeholder="Ajouter une tâche"
       />
+      <div>Completed Todo : {completedTodo}</div>
       <button onClick={addTodo}>Ajouter</button>
 
       <div>

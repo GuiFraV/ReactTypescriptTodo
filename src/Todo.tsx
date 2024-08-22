@@ -19,11 +19,18 @@ const Todo = () => {
     setTodoValue("");
   };
 
-  const deleteTodo = (id: number) => {
+  const deleteTodo = (e, id: number) => {
+    e.stopPropagation();
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const isCompleted = () => {};
+  const isCompleted = (id: number) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
 
   return (
     <div>
@@ -31,9 +38,13 @@ const Todo = () => {
       <button onClick={handleTodo}>Valider</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li
+            onClick={() => isCompleted(todo.id)}
+            key={todo.id}
+            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
+          >
             {todo.task}
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+            <button onClick={(e) => deleteTodo(e, todo.id)}>Delete</button>
           </li>
         ))}
       </ul>

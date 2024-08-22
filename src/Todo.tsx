@@ -49,7 +49,9 @@ const TodoList: React.FC = () => {
           <li
             key={todo.id}
             onClick={() => isCompleted(todo.id)}
-            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
+            style={{
+              textDecoration: todo.completed ? "line-through" : "none",
+            }}
           >
             {todo.task}
             <button onClick={(e) => deleteTodo(e, todo.id)}>Supprimer</button>

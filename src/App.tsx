@@ -1,7 +1,7 @@
-import Todo from "./Todo";
+import FromTodo from "./FromTodo";
 
 function App() {
-  return <Todo />;
+  return <FromTodo />;
 }
 
 export default App;

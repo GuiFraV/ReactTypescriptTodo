@@ -1,7 +1,7 @@
-import FromTodo from "./FromTodo";
+import HomeWork from "./HomeWork";
 
 function App() {
-  return <FromTodo />;
+  return <HomeWork />;
 }
 
 export default App;

@@ -18,8 +18,13 @@ const TestTodo = () => {
   };
 
   const handleTodo = () => {
-    setTodos([...todos, { id: Date.now(), text: textTodo, completed: false }]);
-    setTextTodo("");
+    if (textTodo.trim() !== "") {
+      setTodos([
+        ...todos,
+        { id: Date.now(), text: textTodo, completed: false },
+      ]);
+      setTextTodo("");
+    }
   };
 
   const deleteTodo = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
@@ -48,10 +53,20 @@ const TestTodo = () => {
     if (filteredTodo === "completed") return todo.completed;
   });
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleTodo();
+    }
+  };
+
   return (
     <div>
       <h3>TestTodo</h3>
-      <input onChange={(e) => handleTextTodo(e)} value={textTodo}></input>
+      <input
+        onKeyDown={handleKeyDown}
+        onChange={handleTextTodo}
+        value={textTodo}
+      ></input>
       <button onClick={handleTodo}>Valider</button>
       <div>
         <button onClick={() => handleFilterTodo("all")}>all</button>

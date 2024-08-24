@@ -1,7 +1,7 @@
-import HomeWork from "./HomeWork";
+import TestTodo from "./TestTodo";
 
 function App() {
-  return <HomeWork />;
+  return <TestTodo />;
 }
 
 export default App;
